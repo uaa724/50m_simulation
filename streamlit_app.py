@@ -3,6 +3,13 @@ import random as rd
 import numpy as np
 import streamlit as st
 
+[theme]
+primaryColor="#904444"
+backgroundColor="#e0d8d8"
+secondaryBackgroundColor="#a6b3cb"
+textColor="#41424a"
+font="monospace"
+
 st.title("小学生成長見守り")
 st.caption('ランダムな生徒、学校の名前と、タイムが生成されます。生徒数を最初に決めてから実行してください。')
 st.caption('ここでは一年生のタイム順でソートされています。個人で解析を行いたい場合、結果の生成後に表示されるダウンロードボタンからcsvファイルをダウンロードしてください。')
@@ -150,9 +157,7 @@ if st.button("実行"):
     st.write(school_name+"小学校　50m走の結果！")
     st.write(results.sort_values(1 , axis = 1))
     
-    @st.cache_data
     def convert_df(results):
-        # IMPORTANT: Cache the conversion to prevent computation on every rerun
         return results.to_csv().encode("shift-jis")
 
     csv = convert_df(results)
@@ -161,5 +166,4 @@ if st.button("実行"):
         label="出力結果をcsv形式で保存",
         data=csv,
         file_name=school_name+"小学校50m走.csv",
-        mime="text/csv",
-    )
+        mime="text/csv", )
