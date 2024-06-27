@@ -3,12 +3,6 @@ import random as rd
 import numpy as np
 import streamlit as st
 
-[theme]
-primaryColor="#904444"
-backgroundColor="#e0d8d8"
-secondaryBackgroundColor="#a6b3cb"
-textColor="#41424a"
-font="monospace"
 
 st.title("小学生成長見守り")
 st.caption('ランダムな生徒、学校の名前と、タイムが生成されます。生徒数を最初に決めてから実行してください。')
