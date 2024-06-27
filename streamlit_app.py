@@ -2,27 +2,19 @@ import pandas as pd
 import random as rd
 import numpy as np
 import streamlit as st
-import csv 
-
 
 st.title("小学生成長見守り")
-
 st.caption('ランダムな生徒、学校の名前と、タイムが生成されます。生徒数を最初に決めてから実行してください。')
 st.caption('ここでは一年生のタイム順でソートされています。個人で解析を行いたい場合、結果の生成後に表示されるダウンロードボタンからcsvファイルをダウンロードしてください。')
 
-
-#生徒数
 num_students = st.slider("生徒数",5,100)
 
 if st.button("実行"):
 
-
-    #タイムつくる＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    #time_gen
     for i in range(num_students):
         exec("student_times" + str(i) + "= []")
 
-
-    #空白のリストに６年間のタイムを記録していく関数定義
     def time_gen(i):
         rng = np.random.default_rng()
         first_times = rng.normal(11.46, 0.59, 1)
@@ -34,7 +26,8 @@ if st.button("実行"):
             base_improve = rng.normal(0.48, 0.08, 1)
             improve = parsonal_growth_rate * base_improve
             exec("student_times" + str(i) + ".append(round(student_times" + str(i) + "[j] - improve[0],2))")
-    #========地名関数============================================================================================================
+            
+    #place_gen
     place_names_first = ["牛","鷲","犬","猫","鼠","羊","馬","雀","象","窯","闇","濁",
         "桜","月","星","風","火","雪","雷","雨","雲","山","海","川",
         "森","林","花","草","鳥","魚","虫","土","空","光","影","石",
@@ -67,8 +60,7 @@ if st.button("実行"):
         else :
             return  first[0]+second[0]+last[0]
 
-    #＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝名前つくる＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
+    #name_gen
     first_names =[ "翔太", "大輔", "蓮", "陸", "悠真", "太一", "颯太", "翼", "健太", "悠斗",
         "拓海", "大和", "悠", "翔", "隼人", "光", "颯", "健", "瑛太", "颯真",
         "悠人", "航", "海斗", "海翔", "一真", "隼", "裕太", "悠生", "陽", "勇太",
@@ -88,8 +80,7 @@ if st.button("実行"):
         "楓太", "陽介", "啓太", "誠", "航太", "航平", "翔吾", "海斗", "瑛", "紘太",
         "航大", "駿", "祐", "徹", "智也", "諒", "佑介", "元気", "優弥", "悠斗",
         "奏太", "京", "一樹", "光太", "陽向", "竜一", "真", "亮介", "圭祐", "祐樹",
-        "駿介", "優人", "健斗", "颯一", "結太", "蒼", "瑛士", "龍生", "瑛介", "瑛汰"
-    ]
+        "駿介", "優人", "健斗", "颯一", "結太", "蒼", "瑛士", "龍生", "瑛介", "瑛汰" ]
 
     last_names = ["佐藤", "鈴木", "高橋", "田中", "渡辺", "伊藤", "山本", "中村", "小林", "加藤",
         "吉田", "山田", "佐々木", "山口", "松本", "井上", "木村", "林", "斎藤", "清水",
@@ -122,18 +113,14 @@ if st.button("実行"):
         "竹中", "浜崎", "赤松", "大城", "平松", "水原", "浜口", "安藤", "樋口", "中井",
         "杉原", "立石", "柿沼", "牧", "桜田", "山野", "成瀬", "野崎", "寺田", "大河原",
         "吉澤", "梅原", "浦田", "早乙女", "水原", "水口", "江口", "香取", "山城", "鎌田",
-        "山中", "鴨井", "北原", "深澤", "須崎", "望月", "室田", "城戸", "北村", "平川"
-    ]
-
+        "山中", "鴨井", "北原", "深澤", "須崎", "望月", "室田", "城戸", "北村", "平川"]
 
     def gen_names(first_names, last_names):
-
         rd.shuffle(first_names)
         rd.shuffle(last_names)
-
         random_names = [f"{last_name} {first_name}" for first_name, last_name in zip(first_names, last_names)]
         return random_names
-  
+
     
     #タイム関数実行
     loop = 0
@@ -154,13 +141,11 @@ if st.button("実行"):
     for i in range(0,num_students):
         exec("results[i] = student_times" +str(i))
 
-
     results.columns = students_names
     results.columns.name = "name"
     results.index = grade
     results.index.name = "grade"
     
-
     st.write("---")
     st.write(school_name+"小学校　50m走の結果！")
     st.write(results.sort_values(1 , axis = 1))
@@ -178,4 +163,3 @@ if st.button("実行"):
         file_name=school_name+"小学校50m走.csv",
         mime="text/csv",
     )
-    #st.write(results.mean(axis=1))
